@@ -56,7 +56,7 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="container mx-auto bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row mt-10 border border-gray-100">
+      <section className="container h-[500px] mx-auto  bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row mt-10 border border-gray-100">
         <div className="flex-1 p-8 md:p-16 bg-gray-50">
           <header className="flex justify-between items-center mb-4">
             <nav className="space-x-4">
@@ -107,26 +107,27 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+      
       <section className="py-8 bg-white">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Our Services</h2>
+          <h2 className="text-3xl font-bold text-center text-green-700 mb-8">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center p-8 bg-gray-100 rounded-lg shadow-md">
+            <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
               <FontAwesomeIcon icon={faHospital} className="text-4xl text-[#5cac51] mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Hospital Registration</h3>
               <p className="text-gray-600 mt-2">Easily register your hospital on our platform to reach more businesses and customers.</p>
             </div>
-            <div className="text-center p-8 bg-gray-100 rounded-lg shadow-md">
+            <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
               <FontAwesomeIcon icon={faMapMarkerAlt} className="text-4xl text-[#5cac51] mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Location Services</h3>
               <p className="text-gray-600 mt-2">Use our map to find healthcare services around you.</p>
             </div>
-            <div className="text-center p-8 bg-gray-100 rounded-lg shadow-md">
+            <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
               <FontAwesomeIcon icon={faHandsHelping} className="text-4xl text-[#5cac51] mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Business Registration</h3>
               <p className="text-gray-600 mt-2">Register your business and connect with healthcare facilities to grow together.</p>
             </div>
-            <div className="text-center p-8 bg-gray-100 rounded-lg shadow-md">
+            <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
               <FontAwesomeIcon icon={faNetworkWired} className="text-4xl text-[#5cac51] mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Network Expansion</h3>
               <p className="text-gray-600 mt-2">Expand your network by connecting with nearby businesses and hospitals.</p>

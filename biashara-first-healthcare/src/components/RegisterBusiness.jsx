@@ -107,8 +107,8 @@ const RegisterBusiness = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-4xl">
+    <div className="min-h-screen bg-slate-200 flex items-center justify-center">
+      <div className="bg-white p-6 rounded shadow-md w-full max-w-4xl mt-10 mb-10">
         <h2 className="text-2xl font-bold mb-4 text-center">
           Register Your Business
         </h2>
@@ -128,6 +128,7 @@ const RegisterBusiness = () => {
             <input
               type="text"
               name="business_owner"
+              Placeholder= "e.g., Jane Doe"
               value={formData.business_owner}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
@@ -141,6 +142,7 @@ const RegisterBusiness = () => {
               type="text"
               name="business_name"
               value={formData.business_name}
+              Placeholder= "e.g., UrbanBazaar Fashion Line"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -153,6 +155,7 @@ const RegisterBusiness = () => {
               type="text"
               name="contact_number"
               value={formData.contact_number}
+              Placeholder= "e.g., +254712345678"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -165,6 +168,7 @@ const RegisterBusiness = () => {
               type="email"
               name="email"
               value={formData.email}
+              Placeholder= "e.g., janedoe@example.com"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -177,6 +181,7 @@ const RegisterBusiness = () => {
               type="text"
               name="address"
               value={formData.address}
+              Placeholder= "e.g., 123 Main Street, Nairobi, Kenya"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -189,6 +194,7 @@ const RegisterBusiness = () => {
               type="text"
               name="business_type"
               value={formData.business_type}
+              Placeholder= "e.g., Clothing Store, Fashion Boutique, Apparel Shop"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -200,6 +206,7 @@ const RegisterBusiness = () => {
             <textarea
               name="description"
               value={formData.description}
+              Placeholder= "e.g., UrbanBazaar Fashion Line offers trendy and high-quality apparel, accessories, and fashion products tailored to meet diverse styles and preferences. We prioritize customer satisfaction with a seamless shopping experience."
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -232,7 +239,7 @@ const RegisterBusiness = () => {
             <button
               type="button"
               onClick={handleUseCurrentLocation}
-              className="w-[48%] bg-blue-600 text-white p-2 rounded hover:bg-blue-500"
+              className="w-[48%] bg-green-600 text-white p-2 rounded hover:bg-green-500"
             >
               Use Current Location
             </button>

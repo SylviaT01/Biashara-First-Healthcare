@@ -1,13 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link } from 'react-router-dom';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import logo from '../components/icons/biashara-first-healthcare-logo-black.png';
+import instagramIcon from '../components/icons/instagramIcon.png';
+import youtubeIcon from '../components/icons/youtubeIcon.png';
+import twitterIcon from '../components/icons/twitterIcon.png';
+import facebookIcon from '../components/icons/facebookIcon.png';
 
 const Footer = () => {
-  return (
-    <footer className="bg-gray-800 text-white py-4">
-      <div className="container mx-auto text-center">
-        <p>&copy; {new Date().getFullYear()} Biashara First Healthcare. All rights reserved.</p>
-      </div>
-    </footer>
-  );
+
+    useEffect(() => {
+        AOS.init();
+    }, []);
+
+    return (
+        <footer className="text-black py-4 bg-[#a5e79a] relative  ">
+            <div className="container px-4 max-w-sm mx-auto md:max-w-none gap-4 mb-2 w-full">
+                <div className="flex flex-col md:flex-row md:justify-between items-center p-2">
+                    <Link to="/" className="font-semibold text-2xl text-gray-700">
+                        {/* <img src={logo} alt="UrbanBazaar Logo" className="h-12 md:h-19" /> */}
+                        BFH
+                    </Link>
+                    <p className="text-gray-600 font-medium text-center mb-4 md:mb-0">
+                        © 2024 BIASHARA FIRST HEALTHCARE. ALL RIGHTS RESERVED.
+                    </p>
+                    <div className="flex flex-wrap gap-4 justify-center md:justify-end">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
+                            <img src={instagramIcon} alt="Instagram" className="h-5 w-5 md:h-6 md:w-6" />
+                        </a>
+                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
+                            <img src={youtubeIcon} alt="YouTube" className="h-5 w-5 md:h-6 md:w-6" />
+                        </a>
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
+                            <img src={twitterIcon} alt="Twitter" className="h-5 w-5 md:h-6 md:w-6" />
+                        </a>
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
+                            <img src={facebookIcon} alt="Facebook" className="h-5 w-5 md:h-6 md:w-6" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+    );
 };
 
 export default Footer;
+

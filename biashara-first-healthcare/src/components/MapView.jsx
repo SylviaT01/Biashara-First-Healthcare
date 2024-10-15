@@ -268,10 +268,10 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
 
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
-        <div className="bg-white p-4 rounded shadow-lg w-96 max-h-96 overflow-y-auto relative">
+        <div className="bg-white p-4 rounded shadow-lg w-100 max-h-96 overflow-y-auto relative">
           <button
             onClick={onClose}
-            className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full"
+            className="absolute top-2 right-2 p-2 bg-gray-300 rounded-md text-gray-700"
           >
             X
           </button>
