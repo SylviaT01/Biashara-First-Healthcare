@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import "ol/ol.css";
 import { Map, View, Overlay } from "ol";
@@ -26,21 +25,22 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
 
   const a =
     Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-    Math.cos(toRadians(lat1)) *
-    Math.cos(toRadians(lat2)) *
-    Math.sin(deltaLon / 2) *
-    Math.sin(deltaLon / 2);
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * 
+    Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  return R * c; // Distance in km
+  return R * c; 
 };
 
 const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = false }) => {
   const mapRef = useRef(null);
-  const [markerLayer, setMarkerLayer] = useState(null);
+  const [hospitalLayer, setHospitalLayer] = useState(null);
+  const [businessLayer, setBusinessLayer] = useState(null);
   const [geojsonData, setGeojsonData] = useState(null);
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
+  const [showHospitals, setShowHospitals] = useState(true);
+  const [showBusinesses, setShowBusinesses] = useState(true);
   const popupRef = useRef();
 
   useEffect(() => {
@@ -88,12 +88,16 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
           }),
         });
 
-        const vectorLayer = new VectorLayer({
+        const hospitalLayer = new VectorLayer({
           source: vectorSource,
           style: hospitalStyle,
         });
 
-        map.addLayer(vectorLayer);
+        map.addLayer(hospitalLayer);
+        setHospitalLayer(hospitalLayer);
+
+        // Toggle hospital layer visibility
+        hospitalLayer.setVisible(showHospitals);
 
         if (zoomToCoordinates) {
           const centerCoords = fromLonLat([zoomToCoordinates[0], zoomToCoordinates[1]]);
@@ -106,12 +110,12 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
       });
 
     const markerSource = new VectorSource();
-    const markerLayer = new VectorLayer({
+    const businessLayer = new VectorLayer({
       source: markerSource,
     });
 
-    map.addLayer(markerLayer);
-    setMarkerLayer(markerSource);
+    map.addLayer(businessLayer);
+    setBusinessLayer(businessLayer); 
 
     if (canPlacePin) {
       map.on("click", (evt) => {
@@ -162,26 +166,25 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
       })
       .catch((error) => console.error("Error loading business data:", error));
 
-      map.on("pointermove", (evt) => {
-        let featureFound = false;
-        map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-          const businessInfo = feature.get("businessInfo");
-          if (businessInfo) {
-            popup.setPosition(evt.coordinate);
-            popupRef.current.innerHTML = `
-              <strong>${businessInfo.business_name}</strong><br/>
-              ${businessInfo.business_type}
-            `;
-            popupRef.current.style.display = "block";
-            featureFound = true;
-          }
-        });
-  
-        if (!featureFound) {
-          popupRef.current.style.display = "none";
+    map.on("pointermove", (evt) => {
+      let featureFound = false;
+      map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+        const businessInfo = feature.get("businessInfo");
+        if (businessInfo) {
+          popup.setPosition(evt.coordinate);
+          popupRef.current.innerHTML = `
+            <strong>${businessInfo.business_name}</strong><br/>
+            ${businessInfo.business_type}
+          `;
+          popupRef.current.style.display = "block";
+          featureFound = true;
         }
       });
-  
+
+      if (!featureFound) {
+        popupRef.current.style.display = "none";
+      }
+    });
 
     map.on("click", (evt) => {
       let featureFound = false;
@@ -205,7 +208,7 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
         popupRef.current.style.display = "none";
       }
     });
-  }, [setCoordinates, zoomToCoordinates, geojsonData, canPlacePin]);
+  }, [setCoordinates, zoomToCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses]);
 
   const getNearbyHospitals = () => {
     if (!selectedBusiness || !geojsonData) return [];
@@ -221,8 +224,8 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
         const distance = haversineDistance(businessLat, businessLon, hospitalLat, hospitalLon);
         return { hospitalFeature, distance };
       })
-      .filter(({ distance }) => distance <= maxDistance) // Filter hospitals within max distance
-      .sort((a, b) => a.distance - b.distance); // Sort by distance (nearest first)
+      .filter(({ distance }) => distance <= maxDistance) 
+      .sort((a, b) => a.distance - b.distance); 
 
     return hospitalsWithinRange;
   };
@@ -243,20 +246,17 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
           <table className="min-w-full table-auto">
             <thead>
               <tr>
-                <th className="px-4 py-2 border-b">Hospital Name</th>
-                <th className="px-4 py-2 border-b">Distance (km)</th>
+                <th className="px-4 py-2">Hospital</th>
+                <th className="px-4 py-2">Distance (km)</th>
               </tr>
             </thead>
             <tbody>
-              {hospitals.map((hospitalData, index) => {
-                const { hospitalFeature, distance } = hospitalData;
-                return (
-                  <tr key={index}>
-                    <td className="px-4 py-2 border-b">{hospitalFeature.properties.name}</td>
-                    <td className="px-4 py-2 border-b">{distance.toFixed(2)}</td>
-                  </tr>
-                );
-              })}
+              {hospitals.map(({ hospitalFeature, distance }, index) => (
+                <tr key={index}>
+                  <td className="border px-4 py-2">{hospitalFeature.properties.name}</td>
+                  <td className="border px-4 py-2">{distance.toFixed(2)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -265,22 +265,44 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
   };
 
   return (
-    <>
-      <div id="map" className="h-full w-full" />
-      <div
-        ref={popupRef}
-        id="popup"
-        className="ol-popup bg-white p-2 rounded shadow-lg w-[200px] text-sm"
-        style={{ position: "absolute", display: "none" }}
-      />
-
+    <div className="map-container relative">
+      <div id="map" className="h-96 w-full"></div>
+      <div ref={popupRef} className="ol-popup" style={{ display: "none" }}></div>
+  
+      {/* Layer control panel */}
+      <div className="absolute top-4 left-4 p-4 bg-white z-10 flex space-x-4">
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={showHospitals}
+            onChange={() => {
+              setShowHospitals((prev) => !prev);
+              hospitalLayer && hospitalLayer.setVisible(!showHospitals);
+            }}
+          />
+          <span>Show Hospitals</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={showBusinesses}
+            onChange={() => {
+              setShowBusinesses((prev) => !prev);
+              businessLayer && businessLayer.setVisible(!showBusinesses);
+            }}
+          />
+          <span>Show Businesses</span>
+        </label>
+      </div>
+  
       <Modal
-        isOpen={selectedBusiness !== null}
+        isOpen={!!selectedBusiness}
         onClose={() => setSelectedBusiness(null)}
         hospitals={getNearbyHospitals()}
       />
-    </>
+    </div>
   );
+  
 };
 
 export default MapView;
