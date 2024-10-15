@@ -16,7 +16,7 @@ import SearchBar from './SearchBar';
 const hospitalsGeoJson = "/assets/Hospital_locations.geojson";
 
 // URL for the businesses route
-const businessesApiUrl = "https://backend-bfh.onrender.com/businesses";
+const businessesApiUrl = "http://127.0.0.1:5000/businesses";
 
 const haversineDistance = (lat1, lon1, lat2, lon2) => {
   const R = 6371;
