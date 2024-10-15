@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from models import db, Business, Hospital
 from flask_migrate import Migrate
+from flask_cors import CORS
 from geopy.distance import geodesic
 
 app = Flask(__name__)
@@ -12,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
+CORS(app)
 
 
 @app.route('/')
@@ -23,16 +25,21 @@ def index():
 def register_business():
     data = request.json
     new_business = Business(
-        name=data['name'],
+        business_owner=data['business_owner'],
+        business_name=data['business_name'],
+        contact_number=data['contact_number'],
+        email=data['email'],
         address=data['address'],
+        business_type=data['business_type'],
+        description=data['description'],
         latitude=data['latitude'],
         longitude=data['longitude'],
-        contact_info=data.get('contact_info')
+        
     )
     db.session.add(new_business)
     db.session.commit()
     
-    return jsonify({'message': f'Business {new_business.name} registered successfully!'}), 201
+    return jsonify({'message': f'Business {new_business.business_name} registered successfully!'}), 201
 
 
 @app.route('/register_hospital', methods=['POST'])
@@ -80,6 +87,28 @@ def nearby_hospitals():
             })
 
     return jsonify({'nearby_hospitals': nearby_hospitals}), 200
+
+# Route to fetch all businesses to be rendered on the map
+@app.route('/businesses', methods=['GET'])
+def get_businesses():
+    # Fetch all businesses
+    all_businesses = Business.query.all()
+    
+    # Create a list of businesses with relevant details
+    businesses_data = [{
+        'business_name': business.business_name,
+        'latitude': business.latitude,
+        'longitude': business.longitude,
+        'business_owner': business.business_owner,
+        'contact_number': business.contact_number,
+        'email': business.email,
+        'address': business.address,
+        'business_type': business.business_type,
+        'description': business.description
+    } for business in all_businesses]
+
+    return jsonify({'businesses': businesses_data}), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)

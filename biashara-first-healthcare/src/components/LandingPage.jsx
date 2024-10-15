@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MapView from "./MapView";
 
-
 const LandingPage = () => {
+  const [coordinates, setCoordinates] = useState([0, 0]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -31,12 +32,10 @@ const LandingPage = () => {
             Use the map below to find nearby hospitals based on business location.
           </p>
           <div className="h-96">
-            <MapView />
+          <MapView setCoordinates={setCoordinates} canPlacePin={false} />
           </div>
         </div>
       </section>
-
-      
     </div>
   );
 };
