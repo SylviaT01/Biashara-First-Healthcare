@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 import MapView from "./MapView";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -60,7 +61,9 @@ const LandingPage = () => {
           <header className="flex justify-between items-center mb-4">
             <nav className="space-x-4">
               <Link to="/about" className="text-gray-500 hover:text-gray-700">About</Link>
-              <Link to="/location" className="text-gray-500 hover:text-gray-700">Location</Link>
+              <ScrollLink to="map-section" smooth={true} duration={500} className="text-gray-500 hover:text-gray-700">
+                Location
+              </ScrollLink>
             </nav>
           </header>
           <div className="text-left">
@@ -77,7 +80,7 @@ const LandingPage = () => {
         </div>
         <div className="flex-1 relative bg-green-200">
           <div
-            className="absolute inset-0 transition-all duration-1000"
+            className="absolute inset-0 transition-all duration-1000 opacity-70"
             style={{
               backgroundImage: `url(${slides[currentSlide].url})`,
               backgroundSize: "cover",
@@ -88,17 +91,9 @@ const LandingPage = () => {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 flex flex-col items-center justify-center text-center h-full" data-aos="fade-up">
-            <h2 className="text-5xl font-bold mb-4">{slides[currentSlide].title}</h2>
+          <div className="relative z-10 flex flex-col items-center justify-center text-center h-full text-gray-300" data-aos="fade-up">
+            <h2 className="text-5xl font-bold mb-4">{slides[currentSlide].heading}</h2>
             <p className="text-lg max-w-2xl mx-auto mb-8">{slides[currentSlide].description}</p>
-            <div className="flex space-x-4">
-              <Link to="/register-business" className="px-6 py-3 bg-[#5cac51] text-blue-800 rounded-md hover:bg-[#7eda72]">
-                Register Your Business
-              </Link>
-              <button className="px-6 py-3 bg-white text-blue-800 rounded-md hover:bg-gray-100">
-                Register Your Hospital
-              </button>
-            </div>
           </div>
 
           {/* Slider Controls */}
@@ -112,7 +107,7 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      <section className="py-16 bg-white">
+      <section className="py-8 bg-white">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -141,8 +136,8 @@ const LandingPage = () => {
       </section>
 
       {/* Map Section */}
-      <section className="h-[500px] bg-white">
-        <div className="container mx-auto">
+      <section id="map-section" className=" bg-white">
+        <div id="map-section" className="container mx-auto">
           <h3 className="text-3xl font-bold text-center text-green-700 mb-4">
             Find Nearby Hospitals
           </h3>
@@ -158,17 +153,17 @@ const LandingPage = () => {
       {/* Additional Info Section */}
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto">
-          <h3 className="text-2xl font-bold text-center text-blue-600 mb-4">
+          <h3 className="text-2xl font-bold text-center text-green-700 mb-4">
             Why Choose Us?
           </h3>
           <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
             We make it easier for small businesses to locate health facilities, while helping health facilities to become easily accessible.
           </p>
           <div className="flex justify-center space-x-4">
-            <Link to="/services" className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-500">
+            <Link to="/services" className="px-6 py-3 bg-[#66b65b] text-white rounded-md hover:bg-[#7db975]">
               Learn More
             </Link>
-            <Link to="/contact" className="px-6 py-3 bg-yellow-400 text-blue-800 rounded-md hover:bg-yellow-300">
+            <Link to="/contact" className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
               Contact Us
             </Link>
           </div>

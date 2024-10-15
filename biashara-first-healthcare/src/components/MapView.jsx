@@ -177,6 +177,7 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
           popup.setPosition(evt.coordinate);
           popupRef.current.innerHTML = `
             <strong>${businessInfo.business_name}</strong><br/>
+            <hr style="margin: 5px 0;"/>
             ${businessInfo.business_type}
           `;
           popupRef.current.style.display = "block";
@@ -195,6 +196,7 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
             popup.setPosition(evt.coordinate);
             popupRef.current.innerHTML = `
               <strong>${hospitalName}</strong><br/>
+              <hr style="margin: 5px 0;"/>
               Hospital
             `;
             popupRef.current.style.display = "block";
