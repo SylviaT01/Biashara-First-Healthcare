@@ -10,6 +10,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import { Style, Icon } from "ol/style";
 import { Point } from "ol/geom";
 import Feature from "ol/Feature";
+import SearchBar from './SearchBar';
 
 // Path to GeoJSON data for hospital locations
 const hospitalsGeoJson = "/assets/Hospital_locations.geojson";
@@ -25,11 +26,11 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
 
   const a =
     Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * 
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
     Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  return R * c; 
+  return R * c;
 };
 
 const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = false }) => {
@@ -99,6 +100,8 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
         // Toggle hospital layer visibility
         hospitalLayer.setVisible(showHospitals);
 
+
+
         if (zoomToCoordinates) {
           const centerCoords = fromLonLat([zoomToCoordinates[0], zoomToCoordinates[1]]);
           map.getView().setCenter(centerCoords);
@@ -115,7 +118,7 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
     });
 
     map.addLayer(businessLayer);
-    setBusinessLayer(businessLayer); 
+    setBusinessLayer(businessLayer);
 
     if (canPlacePin) {
       map.on("click", (evt) => {
@@ -184,6 +187,26 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
       if (!featureFound) {
         popupRef.current.style.display = "none";
       }
+      if (!featureFound) {
+        map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+          // Directly access the 'name' field on the feature
+          const hospitalName = feature.get("name"); 
+          if (hospitalName) {
+            popup.setPosition(evt.coordinate);
+            popupRef.current.innerHTML = `
+              <strong>${hospitalName}</strong><br/>
+              Hospital
+            `;
+            popupRef.current.style.display = "block";
+            featureFound = true;
+          }
+        });
+      }
+    
+      // Hide popup if no feature was found
+      if (!featureFound) {
+        popupRef.current.style.display = "none";
+      }
     });
 
     map.on("click", (evt) => {
@@ -210,6 +233,14 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
     });
   }, [setCoordinates, zoomToCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses]);
 
+  const handleSelectLocation = (result) => {
+    const { latitude, longitude } = result.properties || result;
+    const coordinates = fromLonLat([longitude, latitude]);
+    setCoordinates(coordinates);
+    mapRef.current.getView().setCenter(coordinates);
+    mapRef.current.getView().setZoom(20);
+  };
+
   const getNearbyHospitals = () => {
     if (!selectedBusiness || !geojsonData) return [];
 
@@ -224,8 +255,8 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
         const distance = haversineDistance(businessLat, businessLon, hospitalLat, hospitalLon);
         return { hospitalFeature, distance };
       })
-      .filter(({ distance }) => distance <= maxDistance) 
-      .sort((a, b) => a.distance - b.distance); 
+      .filter(({ distance }) => distance <= maxDistance)
+      .sort((a, b) => a.distance - b.distance);
 
     return hospitalsWithinRange;
   };
@@ -266,35 +297,45 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
 
   return (
     <div className="map-container relative">
+
       <div id="map" className="h-96 w-full"></div>
-      <div ref={popupRef} className="ol-popup" style={{ display: "none" }}></div>
-  
+      <div ref={popupRef} className="ol-popup bg-white text-xs font-light p-2" style={{ display: "none" }}></div>
+
       {/* Layer control panel */}
-      <div className="absolute top-4 left-4 p-4 bg-white z-10 flex space-x-4">
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            checked={showHospitals}
-            onChange={() => {
-              setShowHospitals((prev) => !prev);
-              hospitalLayer && hospitalLayer.setVisible(!showHospitals);
-            }}
+      <div className="absolute top-4 left-4 p-4 bg-white z-10 flex space-x-4 flex-col">
+        <div>
+          <SearchBar
+            hospitals={geojsonData}
+            businesses={businesses}
+            onSelectLocation={handleSelectLocation}
           />
-          <span>Show Hospitals</span>
-        </label>
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            checked={showBusinesses}
-            onChange={() => {
-              setShowBusinesses((prev) => !prev);
-              businessLayer && businessLayer.setVisible(!showBusinesses);
-            }}
-          />
-          <span>Show Businesses</span>
-        </label>
+        </div>
+        <div className="mt-2">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={showHospitals}
+              onChange={() => {
+                setShowHospitals((prev) => !prev);
+                hospitalLayer && hospitalLayer.setVisible(!showHospitals);
+              }}
+            />
+            <span>Show Hospitals</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={showBusinesses}
+              onChange={() => {
+                setShowBusinesses((prev) => !prev);
+                businessLayer && businessLayer.setVisible(!showBusinesses);
+              }}
+            />
+            <span>Show Businesses</span>
+          </label>
+        </div>
       </div>
-  
+
       <Modal
         isOpen={!!selectedBusiness}
         onClose={() => setSelectedBusiness(null)}
@@ -302,7 +343,7 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
       />
     </div>
   );
-  
+
 };
 
 export default MapView;
