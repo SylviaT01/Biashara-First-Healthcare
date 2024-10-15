@@ -4,6 +4,7 @@ import LandingPage from "./components/LandingPage";
 import RegisterBusiness from "./components/RegisterBusiness";
 import Navbar from "./components/NavBar";
 import Footer from "./components/Footer";
+import About from "./components/About";
 
 function AppContent() {
   return (
@@ -13,6 +14,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register-business" element={<RegisterBusiness />} />
+        <Route path="/about" element={<About />} />
       </Routes>
       </div>
       <Footer />

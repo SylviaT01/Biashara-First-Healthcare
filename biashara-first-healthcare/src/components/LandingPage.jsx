@@ -149,8 +149,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Additional Info Section */}
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto">
           <h3 className="text-2xl font-bold text-center text-green-700 mb-4">
@@ -160,7 +158,7 @@ const LandingPage = () => {
             We make it easier for small businesses to locate health facilities, while helping health facilities to become easily accessible.
           </p>
           <div className="flex justify-center space-x-4">
-            <Link to="/services" className="px-6 py-3 bg-[#66b65b] text-white rounded-md hover:bg-[#7db975]">
+            <Link to="/about" className="px-6 py-3 bg-[#66b65b] text-white rounded-md hover:bg-[#7db975]">
               Learn More
             </Link>
             <Link to="/contact" className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
