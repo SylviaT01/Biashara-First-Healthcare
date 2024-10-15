@@ -1,5 +1,7 @@
-
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import MapView from "./MapView";
 
 const RegisterBusiness = () => {
@@ -17,6 +19,7 @@ const RegisterBusiness = () => {
   });
 
   const [isPinPlaced, setIsPinPlaced] = useState(false);
+  const navigate = useNavigate();
 
   const setCoordinates = (coordinates, isCurrentLocation = false) => {
     setFormData({
@@ -58,13 +61,26 @@ const RegisterBusiness = () => {
 
       if (response.ok) {
         const result = await response.json();
-        alert(result.message);
+        toast.success(result.message);
+        setFormData({
+          business_owner: "",
+          business_name: "",
+          contact_number: "",
+          email: "",
+          address: "",
+          business_type: "",
+          description: "",
+          latitude: "",
+          longitude: "",
+          useCurrentLocation: false,
+        });
+        setTimeout(() => navigate("/"), 2000);
       } else {
-        alert("Failed to register business");
+        toast.error("Failed to register business");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while registering the business");
+      toast.error("An error occurred while registering the business");
     }
   };
 
@@ -224,7 +240,7 @@ const RegisterBusiness = () => {
           </div>
 
           <div className="h-96 mb-4">
-          <MapView setCoordinates={setCoordinates} canPlacePin={true} />
+            <MapView setCoordinates={setCoordinates} canPlacePin={true} />
           </div>
 
           <button
@@ -244,6 +260,8 @@ const RegisterBusiness = () => {
           </p>
         </div>
       </div>
+      {/* Toast notifications container */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
     </div>
   );
 };
