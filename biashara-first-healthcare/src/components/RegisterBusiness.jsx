@@ -51,7 +51,7 @@ const RegisterBusiness = () => {
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/register_business", {
+      const response = await fetch("https://backend-bfh.onrender.com/register_business", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
