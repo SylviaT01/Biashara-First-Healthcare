@@ -1,4 +1,4 @@
-# Biashara-First-Healthcare
+# Biashara First Healthcare
 
 ## Introduction
 The platform is designed to streamline the connection between businesses and hospitals. It allows business owners to register their businesses and search for healthcare facilities nearby, promoting partnerships and enhancing accessibility to health services.
