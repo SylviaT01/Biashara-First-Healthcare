@@ -3,6 +3,7 @@ from models import db, Business, Hospital
 from flask_migrate import Migrate
 from flask_cors import CORS
 from geopy.distance import geodesic
+import os
 
 app = Flask(__name__)
 
@@ -111,4 +112,4 @@ def get_businesses():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
