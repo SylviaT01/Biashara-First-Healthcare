@@ -51,7 +51,7 @@ const RegisterBusiness = () => {
     };
 
     try {
-      const response = await fetch("https://backend-bfh.onrender.com/register_business", {
+      const response = await fetch("https://backend-bfhealth.onrender.com/register_business", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
