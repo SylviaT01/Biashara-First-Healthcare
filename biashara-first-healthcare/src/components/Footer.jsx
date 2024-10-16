@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Link } from 'react-router-dom';
 import AOS from "aos";
 import "aos/dist/aos.css";
-import logo from '../components/icons/biashara-first-healthcare-logo-black.png';
 import instagramIcon from '../components/icons/instagramIcon.png';
 import youtubeIcon from '../components/icons/youtubeIcon.png';
 import twitterIcon from '../components/icons/twitterIcon.png';
 import facebookIcon from '../components/icons/facebookIcon.png';
+import hospitallogo from '../components/icons/YuBuntu-Logo-WpT-p-500 (1).png';
 
 const Footer = () => {
 
@@ -15,12 +15,11 @@ const Footer = () => {
     }, []);
 
     return (
-        <footer className="text-black py-4 bg-[#a5e79a] relative  ">
+        <footer className="text-black py-4 bg-[#C7E8F8] relative  ">
             <div className="container px-4 max-w-sm mx-auto md:max-w-none gap-4 mb-2 w-full">
                 <div className="flex flex-col md:flex-row md:justify-between items-center p-2">
                     <Link to="/" className="font-semibold text-2xl text-gray-700">
-                        {/* <img src={logo} alt="UrbanBazaar Logo" className="h-12 md:h-19" /> */}
-                        BFH
+                        <img src={hospitallogo} alt="BFH Logo" className="h-4 md:h-19" />
                     </Link>
                     <p className="text-gray-600 font-medium text-center mb-4 md:mb-0">
                         © 2024 BIASHARA FIRST HEALTHCARE. ALL RIGHTS RESERVED.
@@ -42,7 +41,7 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
-        
+
     );
 };
 

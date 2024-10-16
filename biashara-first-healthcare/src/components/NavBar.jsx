@@ -1,15 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../components/icons/biashara-first-healthcare-high-resolution-logo-white-transparent.png";
-import { Link as ScrollLink } from "react-scroll";
+import hospitallogo from "../components/icons/YuBuntu-Logo-WpT-p-500 (1).png"
 
 const Navbar = () => {
   return (
-    <header className="bg-[#a5e79a] text-black p-4">
+    <header className="bg-[#C7E8F8] text-black p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="font-semibold text-2xl text-gray-700">
-          {/* <img src={logo} alt="BFH Logo" className="h-12 md:h-19" /> */}
-          BFH
+          <img src={hospitallogo} alt="BFH Logo" className="h-4 md:h-19" />
         </Link>
         <nav className="space-x-4">
           <Link to="/" className="text-gray-700 hover:text-gray-900 ">Home</Link>

@@ -108,7 +108,7 @@ const RegisterBusiness = () => {
 
   return (
     <div className="min-h-screen bg-slate-200 flex items-center justify-center">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-4xl mt-10 mb-10">
+      <div className="bg-[#DAEFFA] p-6 rounded shadow-md w-full max-w-4xl mt-10 mb-10">
         <h2 className="text-2xl font-bold mb-4 text-center">
           Register Your Business
         </h2>
@@ -239,7 +239,7 @@ const RegisterBusiness = () => {
             <button
               type="button"
               onClick={handleUseCurrentLocation}
-              className="w-[48%] bg-green-600 text-white p-2 rounded hover:bg-green-500"
+              className="w-[48%] bg-[#CCA4A3] text-white p-2 rounded hover:bg-[#F0C2C1]"
             >
               Use Current Location
             </button>
@@ -252,7 +252,7 @@ const RegisterBusiness = () => {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-500"
+            className="w-full bg-[#CCA4A3] text-white p-2 rounded hover:bg-[#F0C2C1]"
           >
             Register Business
           </button>
