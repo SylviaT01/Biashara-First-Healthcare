@@ -46,15 +46,6 @@ const LandingPage = () => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-
   return (
     <div className="min-h-screen ">
       {/* Hero Section */}
@@ -89,23 +80,13 @@ const LandingPage = () => {
               backgroundPosition: "center",
             }}
           >
-            <div className="absolute inset-0 bg-blue-600 bg-opacity-20"></div>
+            <div className="absolute inset-0 bg-pink-600 bg-opacity-30"></div>
           </div>
 
           {/* Content */}
           <div className="relative z-10 flex flex-col items-center justify-center text-center h-full text-gray-300" data-aos="fade-up">
             <h2 className="text-5xl font-bold mb-4">{slides[currentSlide].heading}</h2>
             <p className="text-lg max-w-2xl mx-auto mb-8">{slides[currentSlide].description}</p>
-          </div>
-
-          {/* Slider Controls */}
-          <div className="absolute inset-x-0 bottom-10 flex justify-between items-center px-4">
-            <button onClick={prevSlide} className="p-1 text-[#D6A9A8] rounded hover:bg-[#F0C2C1]" aria-label="Previous Slide">
-              &#10094;
-            </button>
-            <button onClick={nextSlide} className="p-1  text-[#D6A9A8] rounded-full hover:bg-[#F0C2C1]" aria-label="Next Slide">
-              &#10095;
-            </button>
           </div>
         </div>
       </section>
@@ -115,22 +96,22 @@ const LandingPage = () => {
           <h2 className="text-3xl font-bold text-center text-gray-700 mb-8">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-              <FontAwesomeIcon icon={faHospital} className="text-4xl text-[#D6A9A8] mb-4" />
+              <FontAwesomeIcon icon={faHospital} className="text-4xl text-red-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Hospital Registration</h3>
               <p className="text-gray-600 mt-2">Easily register your hospital on our platform to reach more businesses and customers.</p>
             </div>
             <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-              <FontAwesomeIcon icon={faMapMarkerAlt} className="text-4xl text-[#D6A9A8] mb-4" />
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="text-4xl text-red-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Location Services</h3>
               <p className="text-gray-600 mt-2">Use our map to find healthcare services around you.</p>
             </div>
             <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-              <FontAwesomeIcon icon={faHandsHelping} className="text-4xl text-[#D6A9A8] mb-4" />
+              <FontAwesomeIcon icon={faHandsHelping} className="text-4xl text-red-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Business Registration</h3>
               <p className="text-gray-600 mt-2">Register your business and connect with healthcare facilities to grow together.</p>
             </div>
             <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-              <FontAwesomeIcon icon={faNetworkWired} className="text-4xl text-[#D6A9A8] mb-4" />
+              <FontAwesomeIcon icon={faNetworkWired} className="text-4xl text-red-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Network Expansion</h3>
               <p className="text-gray-600 mt-2">Expand your network by connecting with nearby businesses and hospitals.</p>
             </div>
@@ -161,7 +142,7 @@ const LandingPage = () => {
             We make it easier for small businesses to locate health facilities, while helping health facilities to become easily accessible.
           </p>
           <div className="flex justify-center space-x-4">
-            <Link to="/about" className="px-6 py-3 bg-[#cf9897] text-white rounded-md hover:bg-[#e28d8c]">
+            <Link to="/about" className="px-6 py-3 bg-[#e28d8c] text-white rounded-md hover:bg-[#c96361]">
               Learn More
             </Link>
             <Link to="/contact" className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">

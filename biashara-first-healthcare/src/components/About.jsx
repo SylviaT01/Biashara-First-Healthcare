@@ -72,22 +72,22 @@ const About = () => {
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-                            <FontAwesomeIcon icon={faHeartbeat} className="text-4xl text-[#D6A9A8] mb-4" />
+                            <FontAwesomeIcon icon={faHeartbeat} className="text-4xl text-red-300 mb-4" />
                             <h4 className="text-xl font-semibold text-gray-800">Health & Wellness</h4>
                             <p className="text-gray-600 mt-2">We prioritize the health and wellness of our users, providing easy access to top healthcare facilities.</p>
                         </div>
                         <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-                            <FontAwesomeIcon icon={faHandsHelping} className="text-4xl text-[#D6A9A8] mb-4" />
+                            <FontAwesomeIcon icon={faHandsHelping} className="text-4xl text-red-300 mb-4" />
                             <h4 className="text-xl font-semibold text-gray-800">Support & Collaboration</h4>
                             <p className="text-gray-600 mt-2">We believe in collaboration, supporting both businesses and healthcare providers for mutual growth.</p>
                         </div>
                         <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-                            <FontAwesomeIcon icon={faPeopleCarry} className="text-4xl text-[#D6A9A8] mb-4" />
+                            <FontAwesomeIcon icon={faPeopleCarry} className="text-4xl text-red-300 mb-4" />
                             <h4 className="text-xl font-semibold text-gray-800">Community Impact</h4>
                             <p className="text-gray-600 mt-2">We are dedicated to building strong communities by making healthcare more accessible to all businesses and individuals.</p>
                         </div>
                         <div className="p-6 bg-white shadow-lg rounded-lg text-center transform transition duration-300 hover:scale-105 hover:bg-[#f0f9f4] hover:shadow-2xl">
-                            <FontAwesomeIcon icon={faShieldAlt} className="text-4xl text-[#D6A9A8] mb-4" />
+                            <FontAwesomeIcon icon={faShieldAlt} className="text-4xl text-red-300 mb-4" />
                             <h4 className="text-xl font-semibold text-gray-800">Trust & Integrity</h4>
                             <p className="text-gray-600 mt-2">Our platform is built on trust and integrity, ensuring that businesses and hospitals can rely on us for accurate, dependable connections.</p>
                         </div>
