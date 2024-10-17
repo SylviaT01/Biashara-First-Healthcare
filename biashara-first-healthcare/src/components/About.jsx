@@ -7,7 +7,7 @@ import { Parallax } from 'react-parallax';
 const About = () => {
     const [loading, setLoading] = useState(true);
     return (
-        <div className="min-h-screen bg-slate-200">
+        <div className="min-h-screen">
             <div className="header">
                 <Parallax
                     className="w-full h-[calc(100vh-5rem)] object-cover brightness-[.6]"
@@ -27,8 +27,8 @@ const About = () => {
                     Revolutionizing healthcare connections between businesses and hospitals for a healthier tomorrow.
                 </p>
             </section>
-            <section className="container mx-auto shadow-lg rounded-md">
-                <div className="flex md:px-8 xl:px-44  flex-col md:grid grid-cols-2 gap-2 mx-auto w-full  pb-8 border border-gray-300">
+            <section className="container mx-auto shadow-lg rounded-lg">
+                <div className="flex md:px-8 xl:px-44  flex-col md:grid grid-cols-2 gap-2 mx-auto w-full  pb-8 border border-gray-300 rounded-lg">
                     <div className="flex flex-col justify-center items-start mt-4  pb-2 text-xl ">
                         <h2 className="text-3xl font-semibold text-[#A57D7D]">Our Mission</h2>
                         <p className="text-gray-600 mt-4 font-light">
@@ -43,16 +43,16 @@ const About = () => {
                     <article className="mt-12 hidden md:flex justify-end relative  self-end w-full">
                         <div className="relative after flex justify-end before:bg-[#decbc0]">
                             <img
-                                src="https://img.freepik.com/premium-photo/map-with-3d-location-pin-green-urban-area-ecofriendly-city-concept-bright-futuristic_268722-36264.jpg?w=360"
+                                src="https://img.freepik.com/premium-photo/students-looking-map-table_746565-178297.jpg?w=360"
                                 alt="hero-img"
                                 width={400}
                                 height={550}
                                 className={`${loading ? "shimmer" : ""}`}
                                 onLoadingComplete={() => setLoading(false)}
                             />
-                            <div className="absolute left-0 -translate-x-1/2 bottom-0 ">
+                            <div className="absolute left-0 -translate-x-1/2 bottom-0 opacity-50">
                                 <img
-                                    src="https://img.freepik.com/premium-photo/3d-icon-illustration-store-location_1032034-801.jpg?w=740"
+                                    src="https://img.freepik.com/free-photo/young-adults-traveling-london_23-2149259460.jpg?t=st=1729163124~exp=1729166724~hmac=6eebdfeb13f98e22b63cd2089b5ba1ef7ea7559f88be2fa52f6740c36c33a512&w=740"
                                     alt="hero-img"
                                     width={250}
                                     height={165}
@@ -100,7 +100,7 @@ const About = () => {
                     Biashara First Healthcare is more than just a platform; it's a movement aimed at creating stronger healthcare connections. We bring the power of businesses and healthcare providers together for better access to care and support.
                 </p>
                 <div className="flex justify-center space-x-6">
-                    <a href="/register-business" className="px-6 py-3 bg-[#D6A9A8] text-white rounded-md hover:bg-[#F0C2C1]">
+                    <a href="/register-business" className="px-6 py-3 bg-[#cf9897] text-gray-500 rounded-md hover:bg-[#e28d8c]">
                         Register Your Business
                     </a>
                     <a href="/contact" className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">

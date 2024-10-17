@@ -1,0 +1,51 @@
+.download-button {
+    position: relative;
+    padding: 15px 30px;
+    height: 8vh;
+    background-color: transparent;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: bounce 2s infinite;
+  }
+  
+  .download-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.4s;
+  }
+  
+  .download-button:hover {
+    background-color:#fca5a5;
+    box-shadow: 0 0 20px #ff4b4b;
+  }
+
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 5px #ff4b4b;
+    }
+    50% {
+      box-shadow: 0 0 20px #e9e9e9, 0 0 30px #ff4b4b;
+    }
+    100% {
+      box-shadow: 0 0 5px #fca5a5;
+    }
+  }
+  
+  .download-button {
+    
+    animation: bounce 2s infinite, glow 2s infinite alternate;
+  }
+    
+
+@media (min-width: 1600px) {
+  .download-button {
+    margin-top: 10vh;
+    font-size: 3vh;
+    width: 18vw;
+  }
+
+}

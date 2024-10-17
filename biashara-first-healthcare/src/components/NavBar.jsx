@@ -4,7 +4,7 @@ import hospitallogo from "../components/icons/YuBuntu-Logo-WpT-p-500 (1).png"
 
 const Navbar = () => {
   return (
-    <header className="bg-[#C7E8F8] text-black p-4">
+    <header className="bg-[#b7e5db] text-black p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="font-semibold text-2xl text-gray-700">
           <img src={hospitallogo} alt="BFH Logo" className="h-4 md:h-19" />

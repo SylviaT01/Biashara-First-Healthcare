@@ -128,7 +128,7 @@ const RegisterBusiness = () => {
             <input
               type="text"
               name="business_owner"
-              Placeholder= "e.g., Jane Doe"
+              placeholder= "e.g., Jane Doe"
               value={formData.business_owner}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
@@ -142,7 +142,7 @@ const RegisterBusiness = () => {
               type="text"
               name="business_name"
               value={formData.business_name}
-              Placeholder= "e.g., UrbanBazaar Fashion Line"
+              placeholder= "e.g., UrbanBazaar Fashion Line"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -155,7 +155,7 @@ const RegisterBusiness = () => {
               type="text"
               name="contact_number"
               value={formData.contact_number}
-              Placeholder= "e.g., +254712345678"
+              placeholder= "e.g., +254712345678"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -168,7 +168,7 @@ const RegisterBusiness = () => {
               type="email"
               name="email"
               value={formData.email}
-              Placeholder= "e.g., janedoe@example.com"
+              placeholder= "e.g., janedoe@example.com"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -181,7 +181,7 @@ const RegisterBusiness = () => {
               type="text"
               name="address"
               value={formData.address}
-              Placeholder= "e.g., 123 Main Street, Nairobi, Kenya"
+              placeholder= "e.g., 123 Main Street, Nairobi, Kenya"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -194,7 +194,7 @@ const RegisterBusiness = () => {
               type="text"
               name="business_type"
               value={formData.business_type}
-              Placeholder= "e.g., Clothing Store, Fashion Boutique, Apparel Shop"
+              placeholder= "e.g., Clothing Store, Fashion Boutique, Apparel Shop"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -206,7 +206,7 @@ const RegisterBusiness = () => {
             <textarea
               name="description"
               value={formData.description}
-              Placeholder= "e.g., UrbanBazaar Fashion Line offers trendy and high-quality apparel, accessories, and fashion products tailored to meet diverse styles and preferences. We prioritize customer satisfaction with a seamless shopping experience."
+              placeholder= "e.g., UrbanBazaar Fashion Line offers trendy and high-quality apparel, accessories, and fashion products tailored to meet diverse styles and preferences. We prioritize customer satisfaction with a seamless shopping experience."
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required

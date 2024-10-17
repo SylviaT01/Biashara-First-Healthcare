@@ -7,16 +7,22 @@ import { fromLonLat, toLonLat } from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import GeoJSON from "ol/format/GeoJSON";
-import { Style, Icon } from "ol/style";
-import { Point } from "ol/geom";
+import { Style, Icon, Stroke } from "ol/style";
+import { Point, LineString } from "ol/geom";
+import { decode } from '@mapbox/polyline';
 import Feature from "ol/Feature";
 import SearchBar from './SearchBar';
+import axios from 'axios';
 
 // Path to GeoJSON data for hospital locations
 const hospitalsGeoJson = "/assets/Hospital_locations.geojson";
 
 // URL for the businesses route
 const businessesApiUrl = "https://backend-bfhealth.onrender.com/businesses";
+
+const ORS_API_KEY = "5b3ce3597851110001cf6248fe6ac930d4954f9eada6222989493f22"; 
+const ORS_API_URL_JSON = "https://api.openrouteservice.org/v2/directions/driving-car";
+
 
 const haversineDistance = (lat1, lon1, lat2, lon2) => {
   const R = 6371;
@@ -42,6 +48,8 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [showHospitals, setShowHospitals] = useState(true);
   const [showBusinesses, setShowBusinesses] = useState(true);
+  const [routeLayer, setRouteLayer] = useState(null);
+  const [selectedHospital, setSelectedHospital] = useState(null)
   const popupRef = useRef();
 
   useEffect(() => {
@@ -233,7 +241,10 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
         popupRef.current.style.display = "none";
       }
     });
-  }, [setCoordinates, zoomToCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses]);
+    if (selectedHospital) {
+      showRoute(selectedHospital);
+    }
+  }, [setCoordinates, zoomToCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses, selectedHospital]);
 
   const handleSelectLocation = (result) => {
     const { latitude, longitude } = result.properties || result;
@@ -263,9 +274,96 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
     return hospitalsWithinRange;
   };
 
-  const Modal = ({ isOpen, onClose, hospitals }) => {
-    if (!isOpen) return null;
+const showRoute = async (hospitalCoords) => {
+  const businessCoords = [selectedBusiness.longitude, selectedBusiness.latitude];
 
+  console.log("Business coordinates:", businessCoords);
+  console.log("Hospital coordinates:", hospitalCoords);
+
+  try {
+    const response = await axios.post(
+      `${ORS_API_URL_JSON}?api_key=${ORS_API_KEY}`,
+      {
+        coordinates: [businessCoords, hospitalCoords],
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("ORS API response:", response.data);
+
+    // Check if the response has routes
+    if (!response.data || !response.data.routes || response.data.routes.length === 0) {
+      console.error("No route found in the response.");
+      return;
+    }
+
+    const route = response.data.routes[0];
+    console.log("Route object:", route);
+
+    
+    if (!route.geometry) {
+      console.error("No geometry found in the route.");
+      return;
+    }
+
+    const decodedCoords = decode(route.geometry); 
+    console.log("Decoded route coordinates:", decodedCoords);
+
+    
+    const routeCoords = decodedCoords.map(([lat, lon]) => fromLonLat([lon, lat]));
+
+    // Create route feature and style
+    const routeFeature = new Feature({
+      geometry: new LineString(routeCoords),
+    });
+
+    const routeStyle = new Style({
+      stroke: new Stroke({
+        color: "#FF0000",
+        width: 3,
+      }),
+    });
+
+    routeFeature.setStyle(routeStyle);
+
+   
+    if (routeLayer) {
+      routeLayer.getSource().clear();
+      // Optionally remove the layer from the map if you want to recreate it
+      mapRef.current.removeLayer(routeLayer);
+    }
+
+    // Create a new route layer
+    const routeLayerSource = new VectorSource({
+      features: [routeFeature],
+    });
+
+    const newRouteLayer = new VectorLayer({
+      source: routeLayerSource,
+    });
+    mapRef.current.addLayer(newRouteLayer);
+    setRouteLayer(newRouteLayer); 
+
+    console.log("Route displayed on map.");
+  } catch (error) {
+    console.error("Error fetching route:", error.response ? error.response.data : error.message);
+  }
+};
+
+
+  const Modal = ({ isOpen, onClose, hospitals, onHospitalClick }) => {
+    if (!isOpen) return null;
+    const handleHospitalClick = (hospitalCoords) => {
+      // Call showRoute before closing the modal
+      showRoute(hospitalCoords);
+      onClose(); 
+    };
+    
+    
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
         <div className="bg-white p-4 rounded shadow-lg w-100 max-h-96 overflow-y-auto relative">
@@ -286,7 +384,16 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
             <tbody>
               {hospitals.map(({ hospitalFeature, distance }, index) => (
                 <tr key={index}>
-                  <td className="border px-4 py-2">{hospitalFeature.properties.name}</td>
+                  <td className="border px-4 py-2">
+                    <button
+                      onClick={() =>{ handleHospitalClick([hospitalFeature.geometry.coordinates[0], hospitalFeature.geometry.coordinates[1],]);
+                        onClose();
+                      }}
+                      className="text-blue-500 underline"
+                    >
+                      {hospitalFeature.properties.name}
+                    </button>
+                  </td>
                   <td className="border px-4 py-2">{distance.toFixed(2)}</td>
                 </tr>
               ))}
@@ -342,6 +449,7 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
         isOpen={!!selectedBusiness}
         onClose={() => setSelectedBusiness(null)}
         hospitals={getNearbyHospitals()}
+        onHospitalClick={(hospitalCoords) => showRoute(hospitalCoords)}
       />
     </div>
   );

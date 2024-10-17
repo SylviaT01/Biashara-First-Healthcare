@@ -4,13 +4,15 @@ import { Link as ScrollLink } from "react-scroll";
 import MapView from "./MapView";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import "./styles/button.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHospital, faMapMarkerAlt, faHandsHelping, faNetworkWired } from "@fortawesome/free-solid-svg-icons";
 
 const LandingPage = () => {
   const slides = [
     {
-      url: "https://img.freepik.com/premium-photo/3d-icon-illustration-store-location_1032034-801.jpg?w=740",
+      // url: "https://img.freepik.com/premium-photo/3d-icon-illustration-store-location_1032034-801.jpg?w=740",
+      url: "https://img.freepik.com/free-photo/little-girls-consulting-map-their-familiar-trip_23-2149373954.jpg?t=st=1729162263~exp=1729165863~hmac=ee2f4b46ea864cb59df7208544d7aef2442e073550043735075208555960c406&w=360",
       heading: "Connect Businesses & Hospitals",
       description: "Our platform helps businesses and hospitals easily register, and allows businesses to locate nearby hospitals using our interactive map."
     },
@@ -54,10 +56,10 @@ const LandingPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       {/* Hero Section */}
-      <section className="container h-[500px] mx-auto  bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row mt-10 border border-gray-100">
-        <div className="flex-1 p-8 md:p-16 bg-gray-50">
+      <section className="container h-[500px] mx-auto   shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row mt-10 border border-gray-100">
+        <div className="flex-1 p-8 md:p-16 shadow-lg">
           <header className="flex justify-between items-center mb-4">
             <nav className="space-x-4">
               <Link to="/about" className="text-gray-500 hover:text-gray-700">About</Link>
@@ -67,13 +69,13 @@ const LandingPage = () => {
             </nav>
           </header>
           <div className="text-left">
-            <h1 className="text-5xl font-bold text-gray-700">Welcome to <span className="text-[#D6A9A8]">Biashara First Healthcare</span></h1>
+            <h1 className="text-5xl font-bold text-gray-700">Welcome to <span className="text-red-300">Biashara First Healthcare</span></h1>
             <p className="text-lg text-gray-400 mt-2">Connecting Businesses and Hospitals for Better Health Access</p>
             <p className="text-gray-600 mt-6">
               Biashara First Healthcare offers an innovative platform that simplifies registration and connection between businesses and hospitals. Our interactive map enables businesses to easily find nearby healthcare providers, ensuring quick access to essential services. We streamline the process for businesses seeking partnerships and hospitals aiming to expand their reach.
             </p>
             <div className="mt-8 space-x-4">
-              <Link to="/register-business" className="px-6 py-3 bg-[#D6A9A8] text-white rounded-md hover:bg-[#F0C2C1]">Register Your Business</Link>
+              <Link to="/register-business" className="download-button text-gray-800 rounded-md">Register Your Business</Link>
               <button className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Register Your Hospital</button>
             </div>
           </div>
@@ -98,10 +100,10 @@ const LandingPage = () => {
 
           {/* Slider Controls */}
           <div className="absolute inset-x-0 bottom-10 flex justify-between items-center px-4">
-            <button onClick={prevSlide} className="p-2 bg-[#D6A9A8] text-white rounded-full hover:bg-[#F0C2C1]" aria-label="Previous Slide">
+            <button onClick={prevSlide} className="p-1 text-[#D6A9A8] rounded hover:bg-[#F0C2C1]" aria-label="Previous Slide">
               &#10094;
             </button>
-            <button onClick={nextSlide} className="p-2 bg-[#D6A9A8] text-white rounded-full hover:bg-[#F0C2C1]" aria-label="Next Slide">
+            <button onClick={nextSlide} className="p-1  text-[#D6A9A8] rounded-full hover:bg-[#F0C2C1]" aria-label="Next Slide">
               &#10095;
             </button>
           </div>
@@ -159,7 +161,7 @@ const LandingPage = () => {
             We make it easier for small businesses to locate health facilities, while helping health facilities to become easily accessible.
           </p>
           <div className="flex justify-center space-x-4">
-            <Link to="/about" className="px-6 py-3 bg-[#D6A9A8] text-white rounded-md hover:bg-[#F0C2C1]">
+            <Link to="/about" className="px-6 py-3 bg-[#cf9897] text-white rounded-md hover:bg-[#e28d8c]">
               Learn More
             </Link>
             <Link to="/contact" className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
