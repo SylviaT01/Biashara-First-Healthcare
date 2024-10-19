@@ -355,15 +355,67 @@ const showRoute = async (hospitalCoords) => {
 };
 
 
+  // const Modal = ({ isOpen, onClose, hospitals, onHospitalClick }) => {
+  //   if (!isOpen) return null;
+  //   const handleHospitalClick = (hospitalCoords) => {
+  //     // Call showRoute before closing the modal
+  //     showRoute(hospitalCoords);
+  //     onClose(); 
+  //   };
+    
+    
+  //   return (
+  //     <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
+  //       <div className="bg-white p-4 rounded shadow-lg w-100 max-h-96 overflow-y-auto relative">
+  //         <button
+  //           onClick={onClose}
+  //           className="absolute top-2 right-2 p-2 bg-gray-300 rounded-md text-gray-700"
+  //         >
+  //           X
+  //         </button>
+  //         <h3 className="text-xl font-bold mb-4">Hospitals near {selectedBusiness.business_name}</h3>
+  //         <table className="min-w-full table-auto">
+  //           <thead>
+  //             <tr>
+  //               <th className="px-4 py-2">Hospital</th>
+  //               <th className="px-4 py-2">Distance (km)</th>
+  //             </tr>
+  //           </thead>
+  //           <tbody>
+  //             {hospitals.map(({ hospitalFeature, distance }, index) => (
+  //               <tr key={index}>
+  //                 <td className="border px-4 py-2">
+  //                   <button
+  //                     onClick={() =>{ handleHospitalClick([hospitalFeature.geometry.coordinates[0], hospitalFeature.geometry.coordinates[1],]);
+  //                       onClose();
+  //                     }}
+  //                     className="text-blue-500 underline"
+  //                   >
+  //                     {hospitalFeature.properties.name}
+  //                   </button>
+  //                 </td>
+  //                 <td className="border px-4 py-2">{distance.toFixed(2)}</td>
+  //               </tr>
+  //             ))}
+  //           </tbody>
+  //         </table>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
   const Modal = ({ isOpen, onClose, hospitals, onHospitalClick }) => {
     if (!isOpen) return null;
+  
     const handleHospitalClick = (hospitalCoords) => {
-      // Call showRoute before closing the modal
-      showRoute(hospitalCoords);
-      onClose(); 
+      // Open Google Maps Directions before closing the modal
+      const businessCoords = [selectedBusiness.latitude, selectedBusiness.longitude];
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${businessCoords[0]},${businessCoords[1]}&destination=${hospitalCoords[1]},${hospitalCoords[0]}&travelmode=driving`;
+      window.open(googleMapsUrl, "_blank");
+  
+      onClose();
     };
-    
-    
+  
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
         <div className="bg-white p-4 rounded shadow-lg w-100 max-h-96 overflow-y-auto relative">
@@ -386,15 +438,13 @@ const showRoute = async (hospitalCoords) => {
                 <tr key={index}>
                   <td className="border px-4 py-2">
                     <button
-                      onClick={() =>{ handleHospitalClick([hospitalFeature.geometry.coordinates[0], hospitalFeature.geometry.coordinates[1],]);
-                        onClose();
-                      }}
-                      className="text-blue-500 underline"
+                      onClick={() => handleHospitalClick([hospitalFeature.geometry.coordinates[0], hospitalFeature.geometry.coordinates[1]])}
+                      className="text-blue-500 hover:underline"
                     >
                       {hospitalFeature.properties.name}
                     </button>
                   </td>
-                  <td className="border px-4 py-2">{distance.toFixed(2)}</td>
+                  <td className="border px-4 py-2">{distance.toFixed(2)} km</td>
                 </tr>
               ))}
             </tbody>
@@ -403,6 +453,9 @@ const showRoute = async (hospitalCoords) => {
       </div>
     );
   };
+  
+
+
 
   return (
     <div className="map-container relative">
