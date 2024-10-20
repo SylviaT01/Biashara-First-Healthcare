@@ -93,6 +93,8 @@ const RegisterBusiness = () => {
             position.coords.latitude,
           ];
           setCoordinates(userCoords, true);
+          window.updateMapView(userCoords[0], userCoords[1]);
+          setIsPinPlaced(true);
         },
         (error) => {
           console.error("Geolocation error: ", error);

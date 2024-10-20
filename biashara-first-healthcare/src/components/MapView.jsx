@@ -39,8 +39,9 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
   return R * c;
 };
 
-const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = false }) => {
+const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
   const mapRef = useRef(null);
+  const mapInstance = useRef(null);
   const [hospitalLayer, setHospitalLayer] = useState(null);
   const [businessLayer, setBusinessLayer] = useState(null);
   const [geojsonData, setGeojsonData] = useState(null);
@@ -53,7 +54,8 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
   const popupRef = useRef();
 
   useEffect(() => {
-    if (mapRef.current) return;
+    // if (mapRef.current) return;
+    if (mapInstance.current) return;
 
     const map = new Map({
       target: "map",
@@ -107,14 +109,6 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
 
         // Toggle hospital layer visibility
         hospitalLayer.setVisible(showHospitals);
-
-
-
-        if (zoomToCoordinates) {
-          const centerCoords = fromLonLat([zoomToCoordinates[0], zoomToCoordinates[1]]);
-          map.getView().setCenter(centerCoords);
-          map.getView().setZoom(14);
-        }
       })
       .catch((error) => {
         console.error("Error loading GeoJSON data:", error);
@@ -150,6 +144,7 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
         markerSource.addFeature(marker);
       });
     }
+    mapInstance.current = map;
 
     fetch(businessesApiUrl)
       .then((response) => response.json())
@@ -244,7 +239,53 @@ const MapView = ({ setCoordinates, center, zoomToCoordinates, canPlacePin = fals
     if (selectedHospital) {
       showRoute(selectedHospital);
     }
-  }, [setCoordinates, zoomToCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses, selectedHospital]);
+  }, [setCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses, selectedHospital]);
+
+  const updateView = (longitude, latitude) => {
+    if (mapInstance.current) {
+      const view = mapInstance.current.getView();
+      view.setCenter(fromLonLat([longitude, latitude]));
+      view.setZoom(16); 
+  
+      const markerSource = new VectorSource();
+      const currentLocationLayer = new VectorLayer({
+        source: markerSource,
+      });
+  
+      
+      markerSource.clear();
+  
+      
+      const marker = new Feature({
+        geometry: new Point(fromLonLat([longitude, latitude])),
+      });
+  
+      const markerStyle = new Style({
+        image: new Icon({
+          src: "/assets/location.png",
+          scale: 0.05,
+          anchor: [0.5, 1],
+        }),
+      });
+  
+      marker.setStyle(markerStyle);
+  
+      
+      markerSource.addFeature(marker);
+  
+     
+      mapInstance.current.addLayer(currentLocationLayer);
+  
+      //  Remove the layer when needed
+      // mapInstance.current.removeLayer(currentLocationLayer);
+    }
+  };
+  
+
+  // Expose the updateView function
+  useEffect(() => {
+    window.updateMapView = updateView;
+  }, []);
 
   const handleSelectLocation = (result) => {
     const { latitude, longitude } = result.properties || result;
@@ -353,57 +394,6 @@ const showRoute = async (hospitalCoords) => {
     console.error("Error fetching route:", error.response ? error.response.data : error.message);
   }
 };
-
-
-  // const Modal = ({ isOpen, onClose, hospitals, onHospitalClick }) => {
-  //   if (!isOpen) return null;
-  //   const handleHospitalClick = (hospitalCoords) => {
-  //     // Call showRoute before closing the modal
-  //     showRoute(hospitalCoords);
-  //     onClose(); 
-  //   };
-    
-    
-  //   return (
-  //     <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
-  //       <div className="bg-white p-4 rounded shadow-lg w-100 max-h-96 overflow-y-auto relative">
-  //         <button
-  //           onClick={onClose}
-  //           className="absolute top-2 right-2 p-2 bg-gray-300 rounded-md text-gray-700"
-  //         >
-  //           X
-  //         </button>
-  //         <h3 className="text-xl font-bold mb-4">Hospitals near {selectedBusiness.business_name}</h3>
-  //         <table className="min-w-full table-auto">
-  //           <thead>
-  //             <tr>
-  //               <th className="px-4 py-2">Hospital</th>
-  //               <th className="px-4 py-2">Distance (km)</th>
-  //             </tr>
-  //           </thead>
-  //           <tbody>
-  //             {hospitals.map(({ hospitalFeature, distance }, index) => (
-  //               <tr key={index}>
-  //                 <td className="border px-4 py-2">
-  //                   <button
-  //                     onClick={() =>{ handleHospitalClick([hospitalFeature.geometry.coordinates[0], hospitalFeature.geometry.coordinates[1],]);
-  //                       onClose();
-  //                     }}
-  //                     className="text-blue-500 underline"
-  //                   >
-  //                     {hospitalFeature.properties.name}
-  //                   </button>
-  //                 </td>
-  //                 <td className="border px-4 py-2">{distance.toFixed(2)}</td>
-  //               </tr>
-  //             ))}
-  //           </tbody>
-  //         </table>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
   const Modal = ({ isOpen, onClose, hospitals, onHospitalClick }) => {
     if (!isOpen) return null;
   
@@ -454,8 +444,6 @@ const showRoute = async (hospitalCoords) => {
     );
   };
   
-
-
 
   return (
     <div className="map-container relative">
