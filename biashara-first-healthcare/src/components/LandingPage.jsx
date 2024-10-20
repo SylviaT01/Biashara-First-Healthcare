@@ -48,8 +48,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen ">
-      {/* Hero Section */}
-      <section className="container h-[500px] mx-auto   shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row mt-10 border border-gray-100">
+      <section className="container mx-auto mt-10 shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row h-auto md:h-[500px] border border-gray-100">
         <div className="flex-1 p-8 md:p-16 shadow-lg">
           <header className="flex justify-between items-center mb-4">
             <nav className="space-x-4">
@@ -60,15 +59,22 @@ const LandingPage = () => {
             </nav>
           </header>
           <div className="text-left">
-            <h1 className="text-5xl font-bold text-gray-700">Welcome to <span className="text-red-300">Biashara First Healthcare</span></h1>
-            <p className="text-lg text-gray-400 mt-2">Connecting Businesses and Hospitals for Better Health Access</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-700">
+              Welcome to <span className="text-red-300">Biashara First Healthcare</span>
+            </h1>
+            <p className="text-base md:text-lg text-gray-400 mt-2">Connecting Businesses and Hospitals for Better Health Access</p>
             <p className="text-gray-600 mt-6">
               Biashara First Healthcare offers an innovative platform that simplifies registration and connection between businesses and hospitals. Our interactive map enables businesses to easily find nearby healthcare providers, ensuring quick access to essential services. We streamline the process for businesses seeking partnerships and hospitals aiming to expand their reach.
             </p>
-            <div className="mt-8 space-x-4">
-              <Link to="/register-business" className="download-button text-gray-800 rounded-md">Register Your Business</Link>
-              <button className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Register Your Hospital</button>
+            <div className="mt-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+              <Link to="/register-business" className="download-button text-gray-800 rounded-md px-6 py-3 flex-grow text-center">
+                Register Your Business
+              </Link>
+              <button className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 flex-grow text-center">
+                Register Your Hospital
+              </button>
             </div>
+
           </div>
         </div>
         <div className="flex-1 relative bg-green-200">
@@ -82,15 +88,13 @@ const LandingPage = () => {
           >
             <div className="absolute inset-0 bg-pink-600 bg-opacity-30"></div>
           </div>
-
-          {/* Content */}
           <div className="relative z-10 flex flex-col items-center justify-center text-center h-full text-gray-300" data-aos="fade-up">
-            <h2 className="text-5xl font-bold mb-4">{slides[currentSlide].heading}</h2>
-            <p className="text-lg max-w-2xl mx-auto mb-8">{slides[currentSlide].description}</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{slides[currentSlide].heading}</h2>
+            <p className="text-base md:text-lg max-w-2xl mx-auto mb-8">{slides[currentSlide].description}</p>
           </div>
         </div>
       </section>
-      
+
       <section className="py-8 bg-white">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-700 mb-8">Our Services</h2>

@@ -18,7 +18,7 @@ const Footer = () => {
         <footer className="text-black py-4 bg-[#b7e5db] relative  ">
             <div className="container px-4 max-w-sm mx-auto md:max-w-none gap-4 mb-2 w-full">
                 <div className="flex flex-col md:flex-row md:justify-between items-center p-2">
-                    <Link to="/" className="font-semibold text-2xl text-gray-700">
+                    <Link to="/" className="font-semibold text-2xl text-gray-700 mb-4 md:mb-0">
                         <img src={hospitallogo} alt="BFH Logo" className="h-4 md:h-19" />
                     </Link>
                     <p className="text-gray-600 font-medium text-center mb-4 md:mb-0">

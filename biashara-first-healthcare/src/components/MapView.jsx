@@ -13,6 +13,8 @@ import { decode } from '@mapbox/polyline';
 import Feature from "ol/Feature";
 import SearchBar from './SearchBar';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Path to GeoJSON data for hospital locations
 const hospitalsGeoJson = "/assets/Hospital_locations.geojson";
@@ -20,7 +22,7 @@ const hospitalsGeoJson = "/assets/Hospital_locations.geojson";
 // URL for the businesses route
 const businessesApiUrl = "https://backend-bfhealth.onrender.com/businesses";
 
-const ORS_API_KEY = "5b3ce3597851110001cf6248fe6ac930d4954f9eada6222989493f22"; 
+const ORS_API_KEY = "5b3ce3597851110001cf6248fe6ac930d4954f9eada6222989493f22";
 const ORS_API_URL_JSON = "https://api.openrouteservice.org/v2/directions/driving-car";
 
 
@@ -52,6 +54,11 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
   const [routeLayer, setRouteLayer] = useState(null);
   const [selectedHospital, setSelectedHospital] = useState(null)
   const popupRef = useRef();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     // if (mapRef.current) return;
@@ -194,7 +201,7 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
       if (!featureFound) {
         map.forEachFeatureAtPixel(evt.pixel, (feature) => {
           // Directly access the 'name' field on the feature
-          const hospitalName = feature.get("name"); 
+          const hospitalName = feature.get("name");
           if (hospitalName) {
             popup.setPosition(evt.coordinate);
             popupRef.current.innerHTML = `
@@ -207,7 +214,7 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
           }
         });
       }
-    
+
       // Hide popup if no feature was found
       if (!featureFound) {
         popupRef.current.style.display = "none";
@@ -245,21 +252,21 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
     if (mapInstance.current) {
       const view = mapInstance.current.getView();
       view.setCenter(fromLonLat([longitude, latitude]));
-      view.setZoom(16); 
-  
+      view.setZoom(16);
+
       const markerSource = new VectorSource();
       const currentLocationLayer = new VectorLayer({
         source: markerSource,
       });
-  
-      
+
+
       markerSource.clear();
-  
-      
+
+
       const marker = new Feature({
         geometry: new Point(fromLonLat([longitude, latitude])),
       });
-  
+
       const markerStyle = new Style({
         image: new Icon({
           src: "/assets/location.png",
@@ -267,20 +274,20 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
           anchor: [0.5, 1],
         }),
       });
-  
+
       marker.setStyle(markerStyle);
-  
-      
+
+
       markerSource.addFeature(marker);
-  
-     
+
+
       mapInstance.current.addLayer(currentLocationLayer);
-  
+
       //  Remove the layer when needed
       // mapInstance.current.removeLayer(currentLocationLayer);
     }
   };
-  
+
 
   // Expose the updateView function
   useEffect(() => {
@@ -315,97 +322,97 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
     return hospitalsWithinRange;
   };
 
-const showRoute = async (hospitalCoords) => {
-  const businessCoords = [selectedBusiness.longitude, selectedBusiness.latitude];
+  const showRoute = async (hospitalCoords) => {
+    const businessCoords = [selectedBusiness.longitude, selectedBusiness.latitude];
 
-  console.log("Business coordinates:", businessCoords);
-  console.log("Hospital coordinates:", hospitalCoords);
+    console.log("Business coordinates:", businessCoords);
+    console.log("Hospital coordinates:", hospitalCoords);
 
-  try {
-    const response = await axios.post(
-      `${ORS_API_URL_JSON}?api_key=${ORS_API_KEY}`,
-      {
-        coordinates: [businessCoords, hospitalCoords],
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const response = await axios.post(
+        `${ORS_API_URL_JSON}?api_key=${ORS_API_KEY}`,
+        {
+          coordinates: [businessCoords, hospitalCoords],
         },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("ORS API response:", response.data);
+
+      // Check if the response has routes
+      if (!response.data || !response.data.routes || response.data.routes.length === 0) {
+        console.error("No route found in the response.");
+        return;
       }
-    );
 
-    console.log("ORS API response:", response.data);
+      const route = response.data.routes[0];
+      console.log("Route object:", route);
 
-    // Check if the response has routes
-    if (!response.data || !response.data.routes || response.data.routes.length === 0) {
-      console.error("No route found in the response.");
-      return;
+
+      if (!route.geometry) {
+        console.error("No geometry found in the route.");
+        return;
+      }
+
+      const decodedCoords = decode(route.geometry);
+      console.log("Decoded route coordinates:", decodedCoords);
+
+
+      const routeCoords = decodedCoords.map(([lat, lon]) => fromLonLat([lon, lat]));
+
+      // Create route feature and style
+      const routeFeature = new Feature({
+        geometry: new LineString(routeCoords),
+      });
+
+      const routeStyle = new Style({
+        stroke: new Stroke({
+          color: "#FF0000",
+          width: 3,
+        }),
+      });
+
+      routeFeature.setStyle(routeStyle);
+
+
+      if (routeLayer) {
+        routeLayer.getSource().clear();
+        // Optionally remove the layer from the map if you want to recreate it
+        mapRef.current.removeLayer(routeLayer);
+      }
+
+      // Create a new route layer
+      const routeLayerSource = new VectorSource({
+        features: [routeFeature],
+      });
+
+      const newRouteLayer = new VectorLayer({
+        source: routeLayerSource,
+      });
+      mapRef.current.addLayer(newRouteLayer);
+      setRouteLayer(newRouteLayer);
+
+      console.log("Route displayed on map.");
+    } catch (error) {
+      console.error("Error fetching route:", error.response ? error.response.data : error.message);
     }
-
-    const route = response.data.routes[0];
-    console.log("Route object:", route);
-
-    
-    if (!route.geometry) {
-      console.error("No geometry found in the route.");
-      return;
-    }
-
-    const decodedCoords = decode(route.geometry); 
-    console.log("Decoded route coordinates:", decodedCoords);
-
-    
-    const routeCoords = decodedCoords.map(([lat, lon]) => fromLonLat([lon, lat]));
-
-    // Create route feature and style
-    const routeFeature = new Feature({
-      geometry: new LineString(routeCoords),
-    });
-
-    const routeStyle = new Style({
-      stroke: new Stroke({
-        color: "#FF0000",
-        width: 3,
-      }),
-    });
-
-    routeFeature.setStyle(routeStyle);
-
-   
-    if (routeLayer) {
-      routeLayer.getSource().clear();
-      // Optionally remove the layer from the map if you want to recreate it
-      mapRef.current.removeLayer(routeLayer);
-    }
-
-    // Create a new route layer
-    const routeLayerSource = new VectorSource({
-      features: [routeFeature],
-    });
-
-    const newRouteLayer = new VectorLayer({
-      source: routeLayerSource,
-    });
-    mapRef.current.addLayer(newRouteLayer);
-    setRouteLayer(newRouteLayer); 
-
-    console.log("Route displayed on map.");
-  } catch (error) {
-    console.error("Error fetching route:", error.response ? error.response.data : error.message);
-  }
-};
+  };
   const Modal = ({ isOpen, onClose, hospitals, onHospitalClick }) => {
     if (!isOpen) return null;
-  
+
     const handleHospitalClick = (hospitalCoords) => {
       // Open Google Maps Directions before closing the modal
       const businessCoords = [selectedBusiness.latitude, selectedBusiness.longitude];
       const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${businessCoords[0]},${businessCoords[1]}&destination=${hospitalCoords[1]},${hospitalCoords[0]}&travelmode=driving`;
       window.open(googleMapsUrl, "_blank");
-  
+
       onClose();
     };
-  
+
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
         <div className="bg-white p-4 rounded shadow-lg w-100 max-h-96 overflow-y-auto relative">
@@ -443,7 +450,7 @@ const showRoute = async (hospitalCoords) => {
       </div>
     );
   };
-  
+
 
   return (
     <div className="map-container relative">
@@ -451,8 +458,13 @@ const showRoute = async (hospitalCoords) => {
       <div id="map" className="h-96 w-full"></div>
       <div ref={popupRef} className="ol-popup bg-white text-xs font-light p-2" style={{ display: "none" }}></div>
 
-      {/* Layer control panel */}
-      <div className="absolute top-4 left-4 p-4 bg-white z-10 flex space-x-4 flex-col">
+      <button
+        className="absolute top-2 right-4 z-20 md:hidden"
+        onClick={toggleMenu}
+      >
+        <FontAwesomeIcon icon={isOpen ? faTimes : faBars} size="lg" />
+      </button>
+      <div className={`absolute top-2 left-10 p-4 bg-white z-10 flex space-x-4 flex-col ${isOpen ? '' : 'hidden md:flex'}`}>
         <div>
           <SearchBar
             hospitals={geojsonData}

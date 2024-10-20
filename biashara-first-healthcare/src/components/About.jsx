@@ -14,22 +14,23 @@ const About = () => {
                     bgImage="https://img.freepik.com/premium-photo/ecofriendly-business-summit-ecofriendly-company-meeting-with-business-people-save-nature_71956-34971.jpg?w=740"
                     strength={225}
                 >
-                    <div style={{ height: 500 }}>
-                        <p className="text-center absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] uppercase font-extralight text-white text-8xl">
+                    <div className="flex items-center justify-center h-full">
+                        <p className="text-center uppercase font-extralight text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
                             About Biashara First Healthcare
                         </p>
                     </div>
                 </Parallax>
             </div>
+
             <section className="container mx-auto text-center py-8">
                 <h1 className="tracking-widest font-semibold uppercase text-xl p-5 text-black">Biashara First Healthcare</h1>
-                <p className="text-4xl px-[20rem] pb-5 font-extralight">
+                <p className="text-lg sm:text-xl md:text-2xl lg:text-4xl px-4 sm:px-10 lg:px-[20rem] pb-5 font-extralight">
                     Revolutionizing healthcare connections between businesses and hospitals for a healthier tomorrow.
                 </p>
             </section>
             <section className="container mx-auto shadow-lg rounded-lg">
-                <div className="flex md:px-8 xl:px-44  flex-col md:grid grid-cols-2 gap-2 mx-auto w-full  pb-8 border border-gray-300 rounded-lg">
-                    <div className="flex flex-col justify-center items-start mt-4  pb-2 text-xl ">
+                <div className="flex md:px-8 xl:px-44 flex-col md:grid grid-cols-1 md:grid-cols-2 gap-4 mx-auto w-full pb-8 border border-gray-300 rounded-lg">
+                    <div className="flex flex-col justify-center items-start mt-4 pb-2 text-xl">
                         <h2 className="text-3xl font-semibold text-[#A57D7D]">Our Mission</h2>
                         <p className="text-gray-600 mt-4 font-light">
                             At Biashara First Healthcare, we aim to bridge the gap between businesses and healthcare services, ensuring that healthcare accessibility is seamless, efficient, and reliable for everyone.
@@ -40,23 +41,20 @@ const About = () => {
                         </p>
                     </div>
 
-                    <article className="mt-12 hidden md:flex justify-end relative  self-end w-full">
-                        <div className="relative after flex justify-end before:bg-[#decbc0]">
+                    {/* Image Section */}
+                    <article className="mt-12 flex justify-center relative self-end w-full md:w-auto">
+                        <div className="relative flex justify-center">
                             <img
                                 src="https://img.freepik.com/premium-photo/students-looking-map-table_746565-178297.jpg?w=360"
                                 alt="hero-img"
-                                width={400}
-                                height={550}
-                                className={`${loading ? "shimmer" : ""}`}
+                                className={`w-full max-w-[400px] ${loading ? "shimmer" : ""}`}
                                 onLoadingComplete={() => setLoading(false)}
                             />
                             <div className="absolute left-0 -translate-x-1/2 bottom-0 opacity-50">
                                 <img
                                     src="https://img.freepik.com/free-photo/young-adults-traveling-london_23-2149259460.jpg?t=st=1729163124~exp=1729166724~hmac=6eebdfeb13f98e22b63cd2089b5ba1ef7ea7559f88be2fa52f6740c36c33a512&w=740"
                                     alt="hero-img"
-                                    width={250}
-                                    height={165}
-                                    className={`${loading ? "shimmer" : ""}`}
+                                    className={`w-full max-w-[250px] ${loading ? "shimmer" : ""}`}
                                     onLoadingComplete={() => setLoading(false)}
                                 />
                             </div>
@@ -64,6 +62,7 @@ const About = () => {
                     </article>
                 </div>
             </section>
+
             <section className=" py-16">
                 <div className="container mx-auto text-center">
                     <h3 className="text-3xl font-bold text-[#A57D7D]">Our Core Values</h3>
