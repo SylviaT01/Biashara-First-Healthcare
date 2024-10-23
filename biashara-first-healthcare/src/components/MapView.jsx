@@ -13,6 +13,7 @@ import { decode } from '@mapbox/polyline';
 import Feature from "ol/Feature";
 import SearchBar from './SearchBar';
 import axios from 'axios';
+import XYZ from 'ol/source/XYZ';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -55,6 +56,7 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
   const [selectedHospital, setSelectedHospital] = useState(null)
   const popupRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
+  const [isSatellite, setIsSatellite] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -64,13 +66,20 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
     // if (mapRef.current) return;
     if (mapInstance.current) return;
 
+    const osmLayer = new TileLayer({
+      source: new OSM(),
+      visible: !isSatellite, 
+    });
+    const satelliteLayer = new TileLayer({
+      source: new XYZ({
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      }),
+      visible: isSatellite,
+    });
+
     const map = new Map({
       target: "map",
-      layers: [
-        new TileLayer({
-          source: new OSM(),
-        }),
-      ],
+      layers: [osmLayer,satelliteLayer],
       view: new View({
         center: fromLonLat([36.8219, -1.2921]),
         zoom: 12,
@@ -246,8 +255,18 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
     if (selectedHospital) {
       showRoute(selectedHospital);
     }
-  }, [setCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses, selectedHospital]);
+  }, [setCoordinates, geojsonData, canPlacePin, showHospitals, showBusinesses, selectedHospital, isSatellite]);
+  useEffect(() => {
+    if (mapInstance.current) {
+      const osmLayer = mapInstance.current.getLayers().item(0); 
+      const satelliteLayer = mapInstance.current.getLayers().item(1);
+      
 
+      osmLayer.setVisible(!isSatellite);
+      satelliteLayer.setVisible(isSatellite);
+      
+    }
+  }, [isSatellite]);
   const updateView = (longitude, latitude) => {
     if (mapInstance.current) {
       const view = mapInstance.current.getView();
@@ -494,6 +513,14 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
               }}
             />
             <span>Show Businesses</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={isSatellite}
+              onChange={() => setIsSatellite((prev) => !prev)}
+            />
+            <span>Satellite View</span>
           </label>
         </div>
       </div>

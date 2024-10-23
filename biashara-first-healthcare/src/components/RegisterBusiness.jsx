@@ -125,12 +125,26 @@ const RegisterBusiness = () => {
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={handleUseCurrentLocation}
+              className="w-[48%] bg-[#CCA4A3] text-white p-2 rounded hover:bg-[#F0C2C1]"
+            >
+              Use Current Location
+            </button>
+            <p className="text-sm text-gray-500">(Click map to place a pin)</p>
+          </div>
+
+          <div className="h-96 mb-4">
+            <MapView setCoordinates={setCoordinates} canPlacePin={true} />
+          </div>
           <div>
             <label className="block text-gray-700">Business Owner</label>
             <input
               type="text"
               name="business_owner"
-              placeholder= "e.g., Jane Doe"
+              placeholder="e.g., Jane Doe"
               value={formData.business_owner}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
@@ -144,7 +158,7 @@ const RegisterBusiness = () => {
               type="text"
               name="business_name"
               value={formData.business_name}
-              placeholder= "e.g., UrbanBazaar Fashion Line"
+              placeholder="e.g., UrbanBazaar Fashion Line"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -157,7 +171,7 @@ const RegisterBusiness = () => {
               type="text"
               name="contact_number"
               value={formData.contact_number}
-              placeholder= "e.g., +254712345678"
+              placeholder="e.g., +254712345678"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -170,7 +184,7 @@ const RegisterBusiness = () => {
               type="email"
               name="email"
               value={formData.email}
-              placeholder= "e.g., janedoe@example.com"
+              placeholder="e.g., janedoe@example.com"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -183,7 +197,7 @@ const RegisterBusiness = () => {
               type="text"
               name="address"
               value={formData.address}
-              placeholder= "e.g., 123 Main Street, Nairobi, Kenya"
+              placeholder="e.g., 123 Main Street, Nairobi, Kenya"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -196,7 +210,7 @@ const RegisterBusiness = () => {
               type="text"
               name="business_type"
               value={formData.business_type}
-              placeholder= "e.g., Clothing Store, Fashion Boutique, Apparel Shop"
+              placeholder="e.g., Clothing Store, Fashion Boutique, Apparel Shop"
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -208,7 +222,7 @@ const RegisterBusiness = () => {
             <textarea
               name="description"
               value={formData.description}
-              placeholder= "e.g., UrbanBazaar Fashion Line offers trendy and high-quality apparel, accessories, and fashion products tailored to meet diverse styles and preferences. We prioritize customer satisfaction with a seamless shopping experience."
+              placeholder="e.g., UrbanBazaar Fashion Line offers trendy and high-quality apparel, accessories, and fashion products tailored to meet diverse styles and preferences. We prioritize customer satisfaction with a seamless shopping experience."
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
@@ -236,22 +250,6 @@ const RegisterBusiness = () => {
               className="w-full p-2 border border-gray-300 rounded bg-gray-100"
             />
           </div>
-
-          <div className="flex justify-between items-center">
-            <button
-              type="button"
-              onClick={handleUseCurrentLocation}
-              className="w-[48%] bg-[#CCA4A3] text-white p-2 rounded hover:bg-[#F0C2C1]"
-            >
-              Use Current Location
-            </button>
-            <p className="text-sm text-gray-500">(Click map to place a pin)</p>
-          </div>
-
-          <div className="h-96 mb-4">
-            <MapView setCoordinates={setCoordinates} canPlacePin={true} />
-          </div>
-
           <button
             type="submit"
             className="w-full bg-[#CCA4A3] text-white p-2 rounded hover:bg-[#F0C2C1]"
