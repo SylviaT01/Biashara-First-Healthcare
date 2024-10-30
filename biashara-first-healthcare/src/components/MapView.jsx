@@ -187,6 +187,7 @@ const MapView = ({ setCoordinates, center, canPlacePin = false }) => {
         });
       })
       .catch((error) => console.error("Error loading business data:", error));
+      mapInstance.current = map;
 
     map.on("pointermove", (evt) => {
       let featureFound = false;

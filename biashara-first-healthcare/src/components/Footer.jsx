@@ -21,21 +21,21 @@ const Footer = () => {
                     <Link to="/" className="font-semibold text-2xl text-gray-700 mb-4 md:mb-0">
                         <img src={hospitallogo} alt="BFH Logo" className="h-4 md:h-19" />
                     </Link>
-                    <p className="text-gray-600 font-medium text-center mb-4 md:mb-0">
+                    <p className="text-gray-600 font-sm text-center mb-4 md:mb-0">
                         © 2024 BIASHARA FIRST HEALTHCARE. ALL RIGHTS RESERVED.
                     </p>
                     <div className="flex flex-wrap gap-4 justify-center md:justify-end">
                         <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
-                            <img src={instagramIcon} alt="Instagram" className="h-5 w-5 md:h-6 md:w-6" />
+                            <img src={instagramIcon} alt="Instagram" className="h-2 w-2 md:h-6 md:w-6" />
                         </a>
                         <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
-                            <img src={youtubeIcon} alt="YouTube" className="h-5 w-5 md:h-6 md:w-6" />
+                            <img src={youtubeIcon} alt="YouTube" className="h-2 w-2 md:h-6 md:w-6" />
                         </a>
                         <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
-                            <img src={twitterIcon} alt="Twitter" className="h-5 w-5 md:h-6 md:w-6" />
+                            <img src={twitterIcon} alt="Twitter" className="h-2 w-2 md:h-6 md:w-6" />
                         </a>
                         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400">
-                            <img src={facebookIcon} alt="Facebook" className="h-5 w-5 md:h-6 md:w-6" />
+                            <img src={facebookIcon} alt="Facebook" className="h-2 w-2 md:h-6 md:w-6" />
                         </a>
                     </div>
                 </div>
